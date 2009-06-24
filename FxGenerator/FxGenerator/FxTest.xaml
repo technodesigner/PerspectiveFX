@@ -1,0 +1,17 @@
+﻿<pfx:EffectBuilderCollection
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:pfx="http://www.codeplex.com/perspectivefx"
+    EffectDirectory="sources"
+    EffectNamespace="FxDemo.Effects"    
+    >
+    <pfx:EffectBuilder
+        EffectName="MonochromeEffect">
+        <pfx:GrayScaler FilterName="GrayScaler"/>
+        <pfx:ColorToner FilterName="ColorToner"/>
+    </pfx:EffectBuilder>
+    <pfx:EffectBuilder
+        EffectName="MixerEffect">
+        <pfx:Mixer FilterName="Mixer"/>
+    </pfx:EffectBuilder>
+</pfx:EffectBuilderCollection>

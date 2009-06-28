@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Les informations générales relatives à un assembly dépendent de 
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
-[assembly: AssemblyTitle("FxGeneratorCmd")]
+[assembly: AssemblyTitle("Perspective.PixelShader.Build")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("FxGeneratorCmd")]
+[assembly: AssemblyProduct("Perspective.PixelShader.Build")]
 [assembly: AssemblyCopyright("Copyright ©  2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Le GUID suivant est pour l'ID de la typelib si ce projet est exposé à COM
-[assembly: Guid("35c82173-8f44-43b6-98f2-60ba6b579bee")]
+[assembly: Guid("dab39d8b-47e5-4765-bb67-fe498197ad65")]
 
 // Les informations de version pour un assembly se composent des quatre valeurs suivantes :
 //
@@ -35,3 +35,24 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion(Perspective.PixelShader.Build.LibraryInfo.GlobalVersion)]
 [assembly: AssemblyFileVersion(Perspective.PixelShader.Build.LibraryInfo.GlobalVersion)]
 
+
+namespace Perspective.PixelShader.Build
+{
+    /// <summary>
+    /// A class to handle the default assembly attribute values.
+    /// </summary>
+    public sealed class LibraryInfo
+    {
+        private LibraryInfo() { }
+
+        /// <summary>
+        /// The default XML namespace.
+        /// </summary>
+        public const string XmlNamespace = Perspective.PixelShader.LibraryInfo.XmlNamespace;
+
+        /// <summary>
+        /// Perspective global version number.
+        /// </summary>
+        public const string GlobalVersion = Perspective.PixelShader.LibraryInfo.GlobalVersion;
+    }
+}

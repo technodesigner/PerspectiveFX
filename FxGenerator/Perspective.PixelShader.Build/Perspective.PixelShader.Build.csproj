@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C674F7C8-A0AC-45FC-9DAD-3A5CA0523F25}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{3CC24B75-095B-4366-AA76-7ABAB23B77E2}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FxGeneratorCmd</RootNamespace>
-    <AssemblyName>FxGeneratorCmd</AssemblyName>
+    <RootNamespace>Perspective.PixelShader.Build</RootNamespace>
+    <AssemblyName>Perspective.PixelShader.Build</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -35,29 +35,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Build.Engine" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="EffectLibraryBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TargetFramework.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="FxTest.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Perspective.PixelShader.Build\Perspective.PixelShader.Build.csproj">
-      <Project>{3CC24B75-095B-4366-AA76-7ABAB23B77E2}</Project>
-      <Name>Perspective.PixelShader.Build</Name>
+    <ProjectReference Include="..\Perspective.PixelShader.Filters.WpfFx\Perspective.PixelShader.Filters.WpfFx.csproj">
+      <Project>{52103702-27A1-4BD2-8BAE-75DCFAF3A640}</Project>
+      <Name>Perspective.PixelShader.Filters.WpfFx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Perspective.PixelShader\Perspective.PixelShader.csproj">
+      <Project>{D8FF1428-30FA-43D9-91C1-2B4EED1B13C4}</Project>
+      <Name>Perspective.PixelShader</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

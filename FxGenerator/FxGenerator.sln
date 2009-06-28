@@ -5,9 +5,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perspective.PixelShader", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perspective.PixelShader.Filters.WpfFx", "Perspective.PixelShader.Filters.WpfFx\Perspective.PixelShader.Filters.WpfFx.csproj", "{52103702-27A1-4BD2-8BAE-75DCFAF3A640}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxGeneratorCmd", "FxGenerator\FxGeneratorCmd.csproj", "{C674F7C8-A0AC-45FC-9DAD-3A5CA0523F25}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perspective.PixelShader.Build", "Perspective.PixelShader.Build\Perspective.PixelShader.Build.csproj", "{3CC24B75-095B-4366-AA76-7ABAB23B77E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxGeneratorCmd", "FxGeneratorCmd\FxGeneratorCmd.csproj", "{C674F7C8-A0AC-45FC-9DAD-3A5CA0523F25}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -21,12 +21,12 @@ Global
 		SccProjectUniqueName2 = Perspective.PixelShader\\Perspective.PixelShader.csproj
 		SccProjectName2 = Perspective.PixelShader
 		SccLocalPath2 = Perspective.PixelShader
-		SccProjectUniqueName3 = FxGenerator\\FxGeneratorCmd.csproj
-		SccProjectName3 = FxGenerator
-		SccLocalPath3 = FxGenerator
-		SccProjectUniqueName4 = Perspective.PixelShader.Build\\Perspective.PixelShader.Build.csproj
-		SccProjectName4 = Perspective.PixelShader.Build
-		SccLocalPath4 = Perspective.PixelShader.Build
+		SccProjectUniqueName3 = Perspective.PixelShader.Build\\Perspective.PixelShader.Build.csproj
+		SccProjectName3 = Perspective.PixelShader.Build
+		SccLocalPath3 = Perspective.PixelShader.Build
+		SccProjectUniqueName4 = FxGeneratorCmd\\FxGeneratorCmd.csproj
+		SccProjectName4 = FxGeneratorCmd
+		SccLocalPath4 = FxGeneratorCmd
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,14 +41,14 @@ Global
 		{52103702-27A1-4BD2-8BAE-75DCFAF3A640}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52103702-27A1-4BD2-8BAE-75DCFAF3A640}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52103702-27A1-4BD2-8BAE-75DCFAF3A640}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C674F7C8-A0AC-45FC-9DAD-3A5CA0523F25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C674F7C8-A0AC-45FC-9DAD-3A5CA0523F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C674F7C8-A0AC-45FC-9DAD-3A5CA0523F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C674F7C8-A0AC-45FC-9DAD-3A5CA0523F25}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3CC24B75-095B-4366-AA76-7ABAB23B77E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3CC24B75-095B-4366-AA76-7ABAB23B77E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CC24B75-095B-4366-AA76-7ABAB23B77E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CC24B75-095B-4366-AA76-7ABAB23B77E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C674F7C8-A0AC-45FC-9DAD-3A5CA0523F25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C674F7C8-A0AC-45FC-9DAD-3A5CA0523F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C674F7C8-A0AC-45FC-9DAD-3A5CA0523F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C674F7C8-A0AC-45FC-9DAD-3A5CA0523F25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

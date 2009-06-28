@@ -8,8 +8,8 @@
     <ProjectGuid>{C674F7C8-A0AC-45FC-9DAD-3A5CA0523F25}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FxGenerator</RootNamespace>
-    <AssemblyName>FxGenerator</AssemblyName>
+    <RootNamespace>FxGeneratorCmd</RootNamespace>
+    <AssemblyName>FxGeneratorCmd</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>

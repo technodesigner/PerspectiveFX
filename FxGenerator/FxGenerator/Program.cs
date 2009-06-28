@@ -39,7 +39,7 @@ namespace FxGenerator
                     Console.WriteLine("  - /wpf:1 : génère un assembly WPF (valeur par défaut wpf:1)");
                     Console.WriteLine("  - /sl:1 : génère un assembly Silverlight (valeur par défaut sl:0)");
                     Console.WriteLine("");
-                    Console.WriteLine(@"Exemple : FxGenerator Fxtest.xaml /debug /wpf:0 /sl:1");
+                    Console.WriteLine(@"Exemple : FxGeneratorCmd Fxtest.xaml /debug /wpf:0 /sl:1");
                     Console.WriteLine("");
                     Console.WriteLine("Dernière version et informations de licence : voir http://www.codeplex.com/perspectivefx");
                     Console.WriteLine("");
@@ -53,7 +53,7 @@ namespace FxGenerator
                     Console.WriteLine("  - /wpf:1 : generates a WPF assembly (default value wpf:1)");
                     Console.WriteLine("  - /sl:1 : generates a Silverlight assembly (default value sl:0)");
                     Console.WriteLine("");
-                    Console.WriteLine(@"Exemple : FxGenerator Fxtest.xaml /debug /wpf:0 /sl:1");
+                    Console.WriteLine(@"Exemple : FxGeneratorCmd Fxtest.xaml /debug /wpf:0 /sl:1");
                     Console.WriteLine("");
                     Console.WriteLine("Last release and license informations : see http://www.codeplex.com/perspectivefx");
                     Console.WriteLine("");

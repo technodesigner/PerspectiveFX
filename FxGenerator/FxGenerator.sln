@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perspective.PixelShader", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Perspective.PixelShader.Filters.WpfFx", "Perspective.PixelShader.Filters.WpfFx\Perspective.PixelShader.Filters.WpfFx.csproj", "{52103702-27A1-4BD2-8BAE-75DCFAF3A640}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxGenerator", "FxGenerator\FxGenerator.csproj", "{C674F7C8-A0AC-45FC-9DAD-3A5CA0523F25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FxGeneratorCmd", "FxGenerator\FxGeneratorCmd.csproj", "{C674F7C8-A0AC-45FC-9DAD-3A5CA0523F25}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -13,15 +13,15 @@ Global
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs10.codeplex.com/
 		SccLocalPath0 = .
-		SccProjectUniqueName1 = FxGenerator\\FxGenerator.csproj
-		SccProjectName1 = FxGenerator
-		SccLocalPath1 = FxGenerator
-		SccProjectUniqueName2 = Perspective.PixelShader.Filters.WpfFx\\Perspective.PixelShader.Filters.WpfFx.csproj
-		SccProjectName2 = Perspective.PixelShader.Filters.WpfFx
-		SccLocalPath2 = Perspective.PixelShader.Filters.WpfFx
-		SccProjectUniqueName3 = Perspective.PixelShader\\Perspective.PixelShader.csproj
-		SccProjectName3 = Perspective.PixelShader
-		SccLocalPath3 = Perspective.PixelShader
+		SccProjectUniqueName1 = Perspective.PixelShader.Filters.WpfFx\\Perspective.PixelShader.Filters.WpfFx.csproj
+		SccProjectName1 = Perspective.PixelShader.Filters.WpfFx
+		SccLocalPath1 = Perspective.PixelShader.Filters.WpfFx
+		SccProjectUniqueName2 = Perspective.PixelShader\\Perspective.PixelShader.csproj
+		SccProjectName2 = Perspective.PixelShader
+		SccLocalPath2 = Perspective.PixelShader
+		SccProjectUniqueName3 = FxGenerator\\FxGeneratorCmd.csproj
+		SccProjectName3 = FxGenerator
+		SccLocalPath3 = FxGenerator
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

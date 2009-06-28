@@ -65,6 +65,10 @@
     <Compile Include="TargetFramework.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Perspective.PixelShader.Filters.WpfFx\Perspective.PixelShader.Filters.WpfFx.csproj">
+      <Project>{52103702-27A1-4BD2-8BAE-75DCFAF3A640}</Project>
+      <Name>Perspective.PixelShader.Filters.WpfFx</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Perspective.PixelShader\Perspective.PixelShader.csproj">
       <Project>{D8FF1428-30FA-43D9-91C1-2B4EED1B13C4}</Project>
       <Name>Perspective.PixelShader</Name>

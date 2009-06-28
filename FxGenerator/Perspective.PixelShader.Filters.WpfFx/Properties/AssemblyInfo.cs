@@ -1,7 +1,19 @@
-﻿using System.Reflection;
+﻿//------------------------------------------------------------------
+//
+//  For licensing information and to get the latest version go to:
+//  http://www.codeplex.com/perspectivefx
+//
+//  THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY
+//  OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT
+//  LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR
+//  FITNESS FOR A PARTICULAR PURPOSE.
+//
+//------------------------------------------------------------------
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System;
+using System.Windows.Markup;
 
 // Les informations générales relatives à un assembly dépendent de 
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
@@ -37,4 +49,5 @@ using System;
 [assembly: AssemblyVersion(Perspective.PixelShader.LibraryInfo.GlobalVersion)]
 // [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion(Perspective.PixelShader.LibraryInfo.GlobalVersion)]
+[assembly: XmlnsDefinition(Perspective.PixelShader.LibraryInfo.XmlNamespace, "Perspective.PixelShader.Filters.WpfFx")]
 [assembly: CLSCompliant(true)]

@@ -54,11 +54,17 @@ namespace Perspective.PixelShader.Filters
         /// <param name="output">The writer object for code generation.</param>
         public override void MainHlsl(System.CodeDom.Compiler.IndentedTextWriter output)
         {
-            output.WriteLine("color.r = grayscale * {0};",
+            //output.WriteLine("color.r = grayscale * {0};",
+            //    _redRatio.FullName);
+            //output.WriteLine("color.g = grayscale * {0};",
+            //    _greenRatio.FullName);
+            //output.WriteLine("color.b = grayscale * {0};",
+            //    _blueRatio.FullName);
+            output.WriteLine("color.r *= {0};",
                 _redRatio.FullName);
-            output.WriteLine("color.g = grayscale * {0};",
+            output.WriteLine("color.g *= {0};",
                 _greenRatio.FullName);
-            output.WriteLine("color.b = grayscale * {0};",
+            output.WriteLine("color.b *= {0};",
                 _blueRatio.FullName);
         }
     }

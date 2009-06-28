@@ -55,7 +55,11 @@ namespace Perspective.PixelShader.Filters
         /// <param name="output">The writer object for code generation.</param>
         public override void MainHlsl(IndentedTextWriter output)
         {
-            output.WriteLine("float3 grayscale = dot(color.rgb, float3({0}, {1}, {2}));",
+            //output.WriteLine("float3 grayscale = dot(color.rgb, float3({0}, {1}, {2}));",
+            //    _redRatio.FullName,
+            //    _greenRatio.FullName,
+            //    _blueRatio.FullName);
+            output.WriteLine("color.rgb = dot(color.rgb, float3({0}, {1}, {2}));",
                 _redRatio.FullName,
                 _greenRatio.FullName,
                 _blueRatio.FullName);

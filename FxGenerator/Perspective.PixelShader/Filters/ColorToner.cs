@@ -17,7 +17,8 @@ using System.Text;
 namespace Perspective.PixelShader.Filters
 {
     /// <summary>
-    /// A toner filter for grayscale images. 
+    /// A toner filter for grayscale or colour images. 
+    /// Default properties values give a sepia tone to a grayscale picture.
     /// Generates the HLSL code for a WPF or Silverlight effect.
     /// </summary>
     public class ColorToner : FilterBase
@@ -54,12 +55,6 @@ namespace Perspective.PixelShader.Filters
         /// <param name="output">The writer object for code generation.</param>
         public override void MainHlsl(System.CodeDom.Compiler.IndentedTextWriter output)
         {
-            //output.WriteLine("color.r = grayscale * {0};",
-            //    _redRatio.FullName);
-            //output.WriteLine("color.g = grayscale * {0};",
-            //    _greenRatio.FullName);
-            //output.WriteLine("color.b = grayscale * {0};",
-            //    _blueRatio.FullName);
             output.WriteLine("color.r *= {0};",
                 _redRatio.FullName);
             output.WriteLine("color.g *= {0};",

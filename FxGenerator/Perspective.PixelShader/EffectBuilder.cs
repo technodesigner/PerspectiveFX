@@ -83,9 +83,16 @@ namespace Perspective.PixelShader
         public string EffectName { get; set; }
 
         /// <summary>
+        /// Indicates if the default color sampler is used. 
+        /// The default value is true
+        /// Set it to false to generate the code from custom filters (warpers).
+        /// </summary>
+        public bool DefaultSampling { get; set; }
+
+        /// <summary>
         /// Gets or sets the default color sampler. Set it to null to generate the code from custom filters.
         /// </summary>
-        public ColorSampler DefaultSampler { get; set; }
+        // public ColorSampler DefaultSampler { get; set; }
 
         private Collection<FilterBase> _filters = new Collection<FilterBase>();
 
@@ -102,9 +109,10 @@ namespace Perspective.PixelShader
         /// </summary>
         public EffectBuilder()
         {
-            // DefaultSampler = new ColorSampler("DefaultSampler");
-            DefaultSampler = new ColorSampler();
-            DefaultSampler.FilterName = "DefaultSampler";
+            DefaultSampling = true;
+
+            //DefaultSampler = new ColorSampler();
+            //DefaultSampler.FilterName = "DefaultSampler";
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands")]
@@ -164,9 +172,14 @@ namespace Perspective.PixelShader
             _shaderOut.Indent++;
 
             //_shaderOut.WriteLine("float4 color = tex2D(Input1, uv);");
-            if (DefaultSampler != null)
+            //if (DefaultSampler != null)
+            //{
+            //    DefaultSampler.MainHlsl(_shaderOut);
+            //}
+            _shaderOut.WriteLine("float4 color;");
+            if (DefaultSampling)
             {
-                DefaultSampler.MainHlsl(_shaderOut);
+                _shaderOut.WriteLine("color = tex2D(Input1, uv);");
             }
             foreach (FilterBase filter in _filters)
             {

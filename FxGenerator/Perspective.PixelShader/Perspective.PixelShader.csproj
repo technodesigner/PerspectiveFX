@@ -58,7 +58,6 @@
     <Compile Include="Filters\Clipper.cs" />
     <Compile Include="Filters\ColorClipper.cs" />
     <Compile Include="Filters\Colorizer.cs" />
-    <Compile Include="ColorSampler.cs" />
     <Compile Include="Filters\ColorToner.cs" />
     <Compile Include="Filters\Convolution3X3Filter.cs" />
     <Compile Include="Filters\GrayScaler.cs" />
@@ -67,7 +66,7 @@
     <Compile Include="Filters\Solarizer.cs" />
     <Compile Include="Filters\Subtractor.cs" />
     <Compile Include="Filters\ThresholdFilter.cs" />
-    <Compile Include="Filters\Transformer.cs" />
+    <Compile Include="Filters\WaveWarper.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

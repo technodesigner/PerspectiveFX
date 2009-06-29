@@ -76,7 +76,7 @@ namespace FxGeneratorCmd
                 }
             }
             EffectLibraryBuilder.BuildFromXaml(filename, wpf, sl, debug);
-            Console.ReadLine();
+            // Console.ReadLine();
         }
     }
 }

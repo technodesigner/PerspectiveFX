@@ -18,7 +18,7 @@ using System.CodeDom.Compiler;
 namespace Perspective.PixelShader.Filters
 {
     /// <summary>
-    /// An inversion filter. 
+    /// An inversion filter, which creates a negative image. 
     /// Generates the HLSL code for a WPF or Silverlight effect.
     /// </summary>
     public class Inverter : FilterBase

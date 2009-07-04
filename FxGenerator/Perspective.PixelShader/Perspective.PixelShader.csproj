@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D8FF1428-30FA-43D9-91C1-2B4EED1B13C4}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -56,6 +56,7 @@
     <Compile Include="EffectSampler.cs" />
     <Compile Include="FilterBase.cs" />
     <Compile Include="Filters\Clipper.cs" />
+    <Compile Include="Filters\ColorContrast.cs" />
     <Compile Include="Filters\ColorToner.cs" />
     <Compile Include="Filters\Convolution3X3Filter.cs" />
     <Compile Include="Filters\GrayScaler.cs" />

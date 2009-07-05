@@ -59,39 +59,6 @@ namespace Perspective.PixelShader.Filters.WpfFx
             Properties.Add(_bloomSaturation);
         }
 
-        ///// <summary>
-        ///// Constructor.
-        ///// </summary>
-        ///// <param name="name">The name of the filter.</param>
-        //public Bloom(string name)
-        //    : base(name)
-        //{
-        //    _baseSaturation = new EffectProperty(this);
-        //    _bloomIntensity = new EffectProperty(this);
-        //    _baseIntensity = new EffectProperty(this);
-        //    _bloomSaturation = new EffectProperty(this);
-
-        //    _baseSaturation.Name = "BaseSaturation";
-        //    _baseSaturation.WrapperType = typeof(double);
-        //    _baseSaturation.DefaultValue = "0.5";
-        //    Properties.Add(_baseSaturation);
-
-        //    _bloomIntensity.Name = "BloomIntensity";
-        //    _bloomIntensity.WrapperType = typeof(double);
-        //    _bloomIntensity.DefaultValue = "0.5";
-        //    Properties.Add(_bloomIntensity);
-
-        //    _baseIntensity.Name = "BaseIntensity";
-        //    _baseIntensity.WrapperType = typeof(double);
-        //    _baseIntensity.DefaultValue = "0.5";
-        //    Properties.Add(_baseIntensity);
-
-        //    _bloomSaturation.Name = "BloomSaturation";
-        //    _bloomSaturation.WrapperType = typeof(double);
-        //    _bloomSaturation.DefaultValue = "0.5";
-        //    Properties.Add(_bloomSaturation);
-        //}
-
         /// <summary>
         /// Generates the HLSL functions region.
         /// </summary>

@@ -55,12 +55,15 @@
     <Compile Include="EffectProperty.cs" />
     <Compile Include="EffectSampler.cs" />
     <Compile Include="FilterBase.cs" />
+    <Compile Include="Filters\Brighter.cs" />
     <Compile Include="Filters\Clipper.cs" />
     <Compile Include="Filters\ColorToner.cs" />
+    <Compile Include="Filters\Contraster.cs" />
     <Compile Include="Filters\Convolution3X3Filter.cs" />
     <Compile Include="Filters\GrayScaler.cs" />
     <Compile Include="Filters\Inverter.cs" />
     <Compile Include="Filters\Mixer.cs" />
+    <Compile Include="Filters\Saturator.cs" />
     <Compile Include="Filters\Solarizer.cs" />
     <Compile Include="Filters\Subtractor.cs" />
     <Compile Include="Filters\ThresholdFilter.cs" />

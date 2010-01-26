@@ -5,7 +5,7 @@
     EffectDirectory="sources"
     EffectNamespace="FxDemo.Effects"    
     >
-    <pfx:EffectBuilder
+    <!--<pfx:EffectBuilder
         EffectName="MonochromeEffect">
         <pfx:GrayScaler FilterName="GrayScaler"/>
         <pfx:ColorToner FilterName="ColorToner"/>
@@ -13,5 +13,11 @@
     <pfx:EffectBuilder
         EffectName="MixerEffect">
         <pfx:Mixer FilterName="Mixer"/>
+    </pfx:EffectBuilder>-->
+    <pfx:EffectBuilder
+        EffectName="TestEffect">
+        <pfx:Contraster FilterName="Contrast"/>
+        <pfx:Brighter FilterName="Brightness"/>
+        <pfx:Saturator FilterName="Saturation"/>
     </pfx:EffectBuilder>
 </pfx:EffectBuilderCollection>

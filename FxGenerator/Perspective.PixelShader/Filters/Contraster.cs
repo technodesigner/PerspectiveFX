@@ -18,6 +18,7 @@ namespace Perspective.PixelShader.Filters
 {
     /// <summary>
     /// A contrast filter. 
+    /// The default level (1.0) doesn't affect the image.
     /// Generates the HLSL code for a WPF or Silverlight effect.
     /// </summary>
     public class Contraster : FilterBase

@@ -18,7 +18,8 @@ namespace Perspective.PixelShader.Filters
 {
     /// <summary>
     /// A filter to change the brightness of an image.
-    /// The default level (1.0) doesn't affect the image.
+    /// The default level (1.0) doesn't affect the image. 
+    /// A null or negative level gives a black image.
     /// Generates the HLSL code for a WPF or Silverlight effect.
     /// </summary>
     public class Brighter : FilterBase

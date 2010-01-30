@@ -172,7 +172,7 @@ namespace Perspective.PixelShader.Build
 
                 if (target == TargetFramework.Silverlight)
                 {
-                    project.AddNewImport(@"$(MSBuildExtensionsPath)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets", null);
+                    project.AddNewImport(@"$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets", null);
                 }
                 if (target == TargetFramework.Wpf)
                 {
@@ -193,8 +193,25 @@ namespace Perspective.PixelShader.Build
 
                 ConsoleLogger logger = new ConsoleLogger();
                 engine.RegisterLogger(logger);
-                engine.BuildProject(project);
-                engine.UnregisterAllLoggers();
+                try
+                {
+                    if (target == TargetFramework.Silverlight)
+                    {
+                        // Silverlight 3.0 RTM requires a project file
+                        // (else an MSB4044 error occurs)
+                        string projectFileName = "FxGenSl.proj";
+                        project.Save(projectFileName);
+                        engine.BuildProjectFile(projectFileName);
+                    }
+                    if (target == TargetFramework.Wpf)
+                    {
+                        engine.BuildProject(project);
+                    }
+                }
+                finally
+                {
+                    engine.UnregisterAllLoggers();
+                }
             }
             finally
             {

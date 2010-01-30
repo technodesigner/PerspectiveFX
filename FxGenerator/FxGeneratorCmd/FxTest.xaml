@@ -17,7 +17,6 @@
     <pfx:EffectBuilder
         EffectName="TestEffect">
         <pfx:Contraster FilterName="Contrast"/>
-        
         <pfx:Brighter FilterName="Brightness"/>
         <pfx:Saturator FilterName="Saturation"/>
     </pfx:EffectBuilder>

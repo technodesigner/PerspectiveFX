@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System;
+using System.Xaml;
 using System.Windows.Markup;
 
 // General Information about an assembly is controlled through the following 
@@ -23,7 +24,7 @@ using System.Windows.Markup;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Perspective.PixelShader")]
-[assembly: AssemblyCopyright("Copyright ©  2009")]
+[assembly: AssemblyCopyright("Copyright ©  2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -71,6 +72,6 @@ namespace Perspective.PixelShader
         /// <summary>
         /// Perspective global version number.
         /// </summary>
-        public const string GlobalVersion = "1.0.0.0";
+        public const string GlobalVersion = "2.0.0.0";
     }
 }

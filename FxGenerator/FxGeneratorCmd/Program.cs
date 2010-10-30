@@ -10,7 +10,6 @@
 //
 //------------------------------------------------------------------
 using System;
-using Perspective.PixelShader.Build;
 using System.Threading;
 
 namespace FxGeneratorCmd
@@ -75,8 +74,8 @@ namespace FxGeneratorCmd
                     wpf = false;
                 }
             }
-            EffectLibraryBuilder.BuildFromXaml(filename, wpf, sl, debug);
-            // Console.ReadLine();
+            Perspective.PixelShader.Build.EffectLibraryBuilder.BuildFromXaml(filename, wpf, sl, debug);
+            Console.ReadLine();
         }
     }
 }

@@ -49,6 +49,12 @@
     <Compile Include="PixelShaderBuildTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Perspective.PixelShader.Compiler\Perspective.PixelShader.Compiler.vcxproj">
+      <Project>{3DF02FCE-8E4F-40A7-836D-2B10942D92DD}</Project>
+      <Name>Perspective.PixelShader.Compiler</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -75,7 +75,7 @@ namespace FxGeneratorCmd
                 }
             }
             Perspective.PixelShader.Build.EffectLibraryBuilder.BuildFromXaml(filename, wpf, sl, debug);
-            Console.ReadLine();
+            // Console.ReadLine();
         }
     }
 }

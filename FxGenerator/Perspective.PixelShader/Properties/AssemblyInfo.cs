@@ -71,7 +71,8 @@ namespace Perspective.PixelShader
 
         /// <summary>
         /// Perspective global version number.
+        /// 2.0.0.1 : 2.0 alpha
         /// </summary>
-        public const string GlobalVersion = "2.0.0.0";
+        public const string GlobalVersion = "2.0.0.1";
     }
 }

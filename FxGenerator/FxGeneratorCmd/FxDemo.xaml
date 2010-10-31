@@ -6,6 +6,22 @@
     EffectNamespace="FxDemo.Effects"    
     >
     <pfx:EffectBuilder
+        EffectName="InvertEffect">
+        <pfx:Inverter FilterName="Inverter"/>
+    </pfx:EffectBuilder>
+    <pfx:EffectBuilder
+        EffectName="WaveEffect"
+        DefaultSampling="False">
+        <pfx:WaveWarper FilterName="WaveWarper"/>
+        <pfx:Saturator FilterName="Saturation"/>
+        <pfx:Contraster FilterName="Contrast"/>
+        <pfx:Brighter FilterName="Brightness"/>
+    </pfx:EffectBuilder>
+    <pfx:EffectBuilder
+        EffectName="LithEffect">
+        <pfx:ThresholdFilter />
+    </pfx:EffectBuilder>    
+    <pfx:EffectBuilder
         EffectName="DisplaySettingEffect">
         <pfx:Contraster FilterName="Contrast"/>
         <pfx:Brighter FilterName="Brightness"/>

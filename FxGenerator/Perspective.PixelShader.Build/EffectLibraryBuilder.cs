@@ -14,7 +14,6 @@ using System.IO;
 using System.Windows.Markup;
 using Microsoft.Build.BuildEngine;
 using System.Reflection;
-using Perspective.PixelShader.Filters.WpfFx;
 
 namespace Perspective.PixelShader.Build
 {
@@ -32,9 +31,9 @@ namespace Perspective.PixelShader.Build
         /// <param name="debug">Indicates if the compilation shall be in debug mode.</param>
         public static void BuildFromXaml(string filename, bool wpf, bool sl, bool debug)
         {
-            // To enforce the reference on Perspective.PixelShader.Filters.WpfFx
-            // for further XAML reading
-            Bloom bloom = null;
+            //// To enforce the reference on Perspective.PixelShader.Filters.WpfFx
+            //// for further XAML reading
+            //Bloom bloom = null;
 
             StreamReader sr = new StreamReader(filename);
             try
@@ -200,8 +199,8 @@ namespace Perspective.PixelShader.Build
                 buildTarget.Condition = "'@(" + pixelShaderItemEntry + ")' != ''";
 
                 BuildTask buildTask = buildTarget.AddNewTask("PixelShaderBuildTask");
-                buildTask.SetParameterValue("PixelShaderFileName", "@(" + pixelShaderItemEntry + ")");
-                // task2.AddOutputItem("Outputs", "Resource");
+                buildTask.SetParameterValue("SourceFiles", "@(" + pixelShaderItemEntry + ")");
+                buildTask.AddOutputItem("OutputFiles", "Resource");
 
                 BuildPropertyGroup propertyGroup2 = project.AddNewPropertyGroup(true);
                 propertyGroup2.AddNewProperty("PrepareResourcesDependsOn", buildTargetName + ";$(PrepareResourcesDependsOn)");

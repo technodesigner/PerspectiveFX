@@ -102,6 +102,7 @@ namespace Perspective.PixelShader.Build
                 propertyGroup.AddNewProperty("AssemblyName", assemblyName);
                 propertyGroup.AddNewProperty("WarningLevel", "4");
                 propertyGroup.AddNewProperty("ErrorReport", "prompt");
+                propertyGroup.AddNewProperty("GenerateResourceNeverLockTypeAssemblies", "true"); // to prevent MSB4018 error
 
                 string targetFolder = target == TargetFramework.Wpf ? @"\WPF" : @"\Silverlight";
                 string configFolder = debug ? @"\Debug" : @"\Release";

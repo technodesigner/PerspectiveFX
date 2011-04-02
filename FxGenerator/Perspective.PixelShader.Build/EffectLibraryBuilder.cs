@@ -12,8 +12,12 @@
 using System;
 using System.IO;
 using System.Windows.Markup;
-using Microsoft.Build.BuildEngine;
+using Microsoft.Build.Construction;
+using Microsoft.Build.Evaluation;
+using Microsoft.Build.Execution;
 using System.Reflection;
+using Microsoft.Build.Logging;
+using Microsoft.Win32;
 
 namespace Perspective.PixelShader.Build
 {
@@ -31,10 +35,6 @@ namespace Perspective.PixelShader.Build
         /// <param name="debug">Indicates if the compilation shall be in debug mode.</param>
         public static void BuildFromXaml(string filename, bool wpf, bool sl, bool debug)
         {
-            //// To enforce the reference on Perspective.PixelShader.Filters.WpfFx
-            //// for further XAML reading
-            //Bloom bloom = null;
-
             StreamReader sr = new StreamReader(filename);
             try
             {
@@ -70,10 +70,15 @@ namespace Perspective.PixelShader.Build
             }
         }
 
+        private static bool RunAs64BitsProcess()
+        {
+            return IntPtr.Size == 8;
+        }
+
         private static void Compile(
-    EffectBuilderCollection builders,
-    TargetFramework target,
-    bool debug)
+            EffectBuilderCollection builders,
+            TargetFramework target,
+            bool debug)
         {
             string assemblyName = builders.EffectNamespace;
             string oldDir = Directory.GetCurrentDirectory();
@@ -83,152 +88,162 @@ namespace Perspective.PixelShader.Build
                 // for getting an exact match betwwen source path and .ps resource path
                 Directory.SetCurrentDirectory(builders.EffectDirectory);
 
-                Engine engine = new Engine();
-                engine.DefaultToolsVersion = "4.0";
+                Project project = new Project();
 
-                Project project = engine.CreateNewProject();
-                project.DefaultTargets = "Build";
-                project.AddNewUsingTaskFromAssemblyName("ShaderBuildTask.PixelShaderCompile", "ShaderBuildTask, Version=1.0.3072.18169, Culture=neutral, PublicKeyToken=44e467d1687af125");
+                if (RunAs64BitsProcess() && (target == TargetFramework.Silverlight))
+                {
+                    // On a 64 bits machine, the 64 version of MsBuild does not find the Silverlight 4 SDK...
+                    // Thanks to Gary Hall, http://stackoverflow.com/questions/3001083/msbuild-command-line-error-silverlight-4-sdk-is-not-installed
+                    // Here the SDK path is read from the registry
+                    RegistryKey registryKey1 = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Silverlight\v4.0\ReferenceAssemblies");
+                    try
+                    {
+                        string slRuntimePath = registryKey1.GetValue("SLRuntimeInstallPath").ToString();
+                        var propertyGroup0 = project.Xml.CreatePropertyGroupElement();
+                        project.Xml.InsertAfterChild(propertyGroup0, project.Xml.LastChild);
+                        propertyGroup0.AddProperty("_FullFrameworkReferenceAssemblyPaths", slRuntimePath);
+                        propertyGroup0.AddProperty("TargetFrameworkDirectory", slRuntimePath);
+                    }
+                    finally
+                    {
+                        registryKey1.Close();
+                    }
+                }
 
-                project.AddNewUsingTaskFromAssemblyName("Perspective.PixelShader.BuildTask.PixelShaderBuildTask", "Perspective.PixelShader.BuildTask");
+                project.SetProperty("DefaultTargets", "Build");
+                var usingTaskElement1 = project.Xml.CreateUsingTaskElement("ShaderBuildTask.PixelShaderCompile", null, "ShaderBuildTask, Version=1.0.3072.18169, Culture=neutral, PublicKeyToken=44e467d1687af125");
+                project.Xml.InsertAfterChild(usingTaskElement1, project.Xml.LastChild);
+                var usingTaskElement2 = project.Xml.CreateUsingTaskElement("Perspective.PixelShader.BuildTask.PixelShaderBuildTask", null, "Perspective.PixelShader.BuildTask");
+                project.Xml.InsertAfterChild(usingTaskElement2, project.Xml.LastChild);
 
-                BuildPropertyGroup propertyGroup = project.AddNewPropertyGroup(false);
-                propertyGroup.AddNewProperty("ProductVersion", "9.0.30729");
-                propertyGroup.AddNewProperty("TargetFrameworkVersion", "v4.0");
-                propertyGroup.AddNewProperty("SchemaVersion", "2.0");
-                propertyGroup.AddNewProperty("ProjectGuid", Guid.NewGuid().ToString());
-                propertyGroup.AddNewProperty("OutputType", "Library");
-                propertyGroup.AddNewProperty("RootNamespace", assemblyName);
-                propertyGroup.AddNewProperty("AssemblyName", assemblyName);
-                propertyGroup.AddNewProperty("WarningLevel", "4");
-                propertyGroup.AddNewProperty("ErrorReport", "prompt");
-                propertyGroup.AddNewProperty("GenerateResourceNeverLockTypeAssemblies", "true"); // to prevent MSB4018 error
+                var propertyGroup = project.Xml.CreatePropertyGroupElement();
+                project.Xml.InsertAfterChild(propertyGroup, project.Xml.LastChild);
+
+                // propertyGroup.AddProperty("ProductVersion", "9.0.30729");
+                propertyGroup.AddProperty("TargetFrameworkVersion", "v4.0");
+                propertyGroup.AddProperty("SchemaVersion", "2.0");
+                propertyGroup.AddProperty("ProjectGuid", Guid.NewGuid().ToString());
+                propertyGroup.AddProperty("OutputType", "Library");
+                propertyGroup.AddProperty("RootNamespace", assemblyName);
+                propertyGroup.AddProperty("AssemblyName", assemblyName);
+                propertyGroup.AddProperty("WarningLevel", "4");
+                propertyGroup.AddProperty("ErrorReport", "prompt");
+                propertyGroup.AddProperty("GenerateResourceNeverLockTypeAssemblies", "true"); // to prevent MSB4018 error
 
                 string targetFolder = target == TargetFramework.Wpf ? @"\WPF" : @"\Silverlight";
                 string configFolder = debug ? @"\Debug" : @"\Release";
-                propertyGroup.AddNewProperty("OutputPath", String.Format("bin{0}{1}", targetFolder, configFolder));
+                propertyGroup.AddProperty("OutputPath", String.Format("bin{0}{1}", targetFolder, configFolder));
 
-                BuildPropertyGroup configPropertyGroup = project.AddNewPropertyGroup(false);
+                var configPropertyGroup = project.Xml.CreatePropertyGroupElement();
+                project.Xml.InsertAfterChild(configPropertyGroup, project.Xml.LastChild);
                 if (debug)
                 {
-                    configPropertyGroup.AddNewProperty("DebugSymbols", "true");
-                    configPropertyGroup.AddNewProperty("DebugType", "full");
-                    configPropertyGroup.AddNewProperty("Optimize", "false");
+                    configPropertyGroup.AddProperty("DebugSymbols", "true");
+                    configPropertyGroup.AddProperty("DebugType", "full");
+                    configPropertyGroup.AddProperty("Optimize", "false");
                     if (target == TargetFramework.Wpf)
                     {
-                        configPropertyGroup.AddNewProperty("DefineConstants", "DEBUG;TRACE");
+                        configPropertyGroup.AddProperty("DefineConstants", "DEBUG;TRACE");
                     }
                     if (target == TargetFramework.Silverlight)
                     {
-                        configPropertyGroup.AddNewProperty("DefineConstants", "DEBUG;TRACE;SILVERLIGHT");
+                        configPropertyGroup.AddProperty("DefineConstants", "DEBUG;TRACE;SILVERLIGHT");
                     }
                 }
                 else
                 {
-                    configPropertyGroup.AddNewProperty("DebugType", "pdbonly");
-                    configPropertyGroup.AddNewProperty("Optimize", "true");
+                    configPropertyGroup.AddProperty("DebugType", "pdbonly");
+                    configPropertyGroup.AddProperty("Optimize", "true");
                     if (target == TargetFramework.Wpf)
                     {
-                        configPropertyGroup.AddNewProperty("DefineConstants", "TRACE");
+                        configPropertyGroup.AddProperty("DefineConstants", "TRACE");
                     }
                     if (target == TargetFramework.Silverlight)
                     {
-                        configPropertyGroup.AddNewProperty("DefineConstants", "TRACE;SILVERLIGHT");
+                        configPropertyGroup.AddProperty("DefineConstants", "TRACE;SILVERLIGHT");
                     }
                 }
 
                 if (target == TargetFramework.Silverlight)
                 {
-                    BuildPropertyGroup slPropertyGroup = project.AddNewPropertyGroup(false);
-                    slPropertyGroup.AddNewProperty("SilverlightApplication", "false");
-                    slPropertyGroup.AddNewProperty("NoStdLib", "true");
-                    slPropertyGroup.AddNewProperty("NoConfig", "true");
+                    var slPropertyGroup = project.Xml.CreatePropertyGroupElement();
+                    project.Xml.InsertAfterChild(slPropertyGroup, project.Xml.LastChild);
+                    slPropertyGroup.AddProperty("SilverlightApplication", "false");
+                    slPropertyGroup.AddProperty("NoStdLib", "true");
+                    slPropertyGroup.AddProperty("NoConfig", "true");
 
-                    BuildItemGroup slItemGroup = project.AddNewItemGroup();
-                    slItemGroup.AddNewItem("Reference", "mscorlib");
-                    slItemGroup.AddNewItem("Reference", "System");
-                    slItemGroup.AddNewItem("Reference", "System.Core");
-                    slItemGroup.AddNewItem("Reference", "System.Windows");
+                    var slItemGroup = project.Xml.CreateItemGroupElement();
+                    project.Xml.InsertAfterChild(slItemGroup, project.Xml.LastChild);
+                    slItemGroup.AddItem("Reference", "mscorlib");
+                    slItemGroup.AddItem("Reference", "System");
+                    slItemGroup.AddItem("Reference", "System.Core");
+                    slItemGroup.AddItem("Reference", "System.Windows");
                 }
                 if (target == TargetFramework.Wpf)
                 {
-                    BuildItemGroup itemGroup = project.AddNewItemGroup();
-                    itemGroup.AddNewItem("Reference", "System");
-                    BuildItem item = itemGroup.AddNewItem("Reference", "System.Core");
-                    item.SetMetadata("RequiredTargetFramework", "4.0");
-                    BuildItem item2 = itemGroup.AddNewItem("Reference", "WindowsBase");
-                    item2.SetMetadata("RequiredTargetFramework", "4.0");
-                    BuildItem item3 = itemGroup.AddNewItem("Reference", "PresentationCore");
-                    item3.SetMetadata("RequiredTargetFramework", "4.0");
-                    BuildItem item4 = itemGroup.AddNewItem("Reference", "PresentationFramework");
-                    item4.SetMetadata("RequiredTargetFramework", "4.0");
+                    var itemGroup = project.Xml.CreateItemGroupElement();
+                    project.Xml.InsertAfterChild(itemGroup, project.Xml.LastChild);
+                    itemGroup.AddItem("Reference", "System");
+                    var item = itemGroup.AddItem("Reference", "System.Core");
+                    item.AddMetadata("RequiredTargetFramework", "4.0");
+                    var item2 = itemGroup.AddItem("Reference", "WindowsBase");
+                    item2.AddMetadata("RequiredTargetFramework", "4.0");
+                    var item3 = itemGroup.AddItem("Reference", "PresentationCore");
+                    item3.AddMetadata("RequiredTargetFramework", "4.0");
+                    var item4 = itemGroup.AddItem("Reference", "PresentationFramework");
+                    item4.AddMetadata("RequiredTargetFramework", "4.0");
                 }
 
-                BuildItemGroup itemGroup2 = project.AddNewItemGroup();
-                BuildItemGroup itemGroup3 = project.AddNewItemGroup();
+                var itemGroup2 = project.Xml.CreateItemGroupElement();
+                project.Xml.InsertAfterChild(itemGroup2, project.Xml.LastChild);
+                var itemGroup3 = project.Xml.CreateItemGroupElement();
+                project.Xml.InsertAfterChild(itemGroup3, project.Xml.LastChild);
                 const string pixelShaderItemEntry = "PixelShader";
                 foreach (EffectBuilder builder in builders)
                 {
-                    itemGroup2.AddNewItem("Compile", builder.EffectName + ".cs");
-                    // itemGroup3.AddNewItem("Effect", builder.EffectName + ".fx");
-                    itemGroup3.AddNewItem(pixelShaderItemEntry, builder.EffectName + ".fx");
+                    itemGroup2.AddItem("Compile", builder.EffectName + ".cs");
+                    itemGroup3.AddItem(pixelShaderItemEntry, builder.EffectName + ".fx");
                 }
 
                 if (target == TargetFramework.Silverlight)
                 {
-                    project.AddNewImport(@"$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v4.0\Microsoft.Silverlight.CSharp.targets", null);
+                    var projectImportElement1 = project.Xml.CreateImportElement(@"$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v4.0\Microsoft.Silverlight.CSharp.targets");
+                    project.Xml.InsertAfterChild(projectImportElement1, project.Xml.LastChild);
                 }
                 if (target == TargetFramework.Wpf)
                 {
-                    project.AddNewImport(@"$(MSBuildToolsPath)\Microsoft.CSharp.targets", null);
+                    var projectImportElement2 = project.Xml.CreateImportElement(@"$(MSBuildToolsPath)\Microsoft.CSharp.targets");
+                    project.Xml.InsertAfterChild(projectImportElement2, project.Xml.LastChild);
                 }
-
-                //Target effectTarget = project.Targets.AddNewTarget("EffectCompile");
-                //effectTarget.Condition = "'@(Effect)' != ''";
-
-                //BuildTask task = effectTarget.AddNewTask("PixelShaderCompile");
-                //task.SetParameterValue("Sources", "@(Effect)");
-                //task.AddOutputItem("Outputs", "Resource");
-
-                //BuildPropertyGroup propertyGroup2 = project.AddNewPropertyGroup(true);
-                //propertyGroup2.AddNewProperty("PrepareResourcesDependsOn", "EffectCompile;$(PrepareResourcesDependsOn)");
-
 
                 const string buildTargetName = "PixelShaderCompile";
 
-                Target buildTarget = project.Targets.AddNewTarget(buildTargetName);
+                var buildTarget = project.Xml.CreateTargetElement(buildTargetName);
+                project.Xml.InsertAfterChild(buildTarget, project.Xml.LastChild);
                 buildTarget.Condition = "'@(" + pixelShaderItemEntry + ")' != ''";
 
-                BuildTask buildTask = buildTarget.AddNewTask("PixelShaderBuildTask");
-                buildTask.SetParameterValue("SourceFiles", "@(" + pixelShaderItemEntry + ")");
+                var buildTask = buildTarget.AddTask("PixelShaderBuildTask");
+
+                buildTask.SetParameter("SourceFiles", "@(" + pixelShaderItemEntry + ")");
                 buildTask.AddOutputItem("OutputFiles", "Resource");
 
-                BuildPropertyGroup propertyGroup2 = project.AddNewPropertyGroup(true);
-                propertyGroup2.AddNewProperty("PrepareResourcesDependsOn", buildTargetName + ";$(PrepareResourcesDependsOn)");
+                var propertyGroup2 = project.Xml.CreatePropertyGroupElement();
+                project.Xml.InsertAfterChild(propertyGroup2, project.Xml.LastChild);
+                propertyGroup2.AddProperty("PrepareResourcesDependsOn", buildTargetName + ";$(PrepareResourcesDependsOn)");
 
-
-                // string s = project.Xml;
-
+                var projectCollection = new ProjectCollection();
+                projectCollection.DefaultToolsVersion = "4.0";
                 ConsoleLogger logger = new ConsoleLogger();
-                engine.RegisterLogger(logger);
+                projectCollection.RegisterLogger(logger);
                 try
                 {
-                    if (target == TargetFramework.Silverlight)
-                    {
-                        // Silverlight 3.0 RTM requires a project file
-                        // (else an MSB4044 error occurs)
-                        string projectFileName = "FxGenSl.proj";
-                        project.Save(projectFileName);
-                        engine.BuildProjectFile(projectFileName);
-                    }
-                    if (target == TargetFramework.Wpf)
-                    {
-                        engine.BuildProject(project);
-                    }
+                    string projectFileName = (target == TargetFramework.Silverlight) ? "FxGenSl.proj" : "FxGenWpf.proj";
+                    project.Save(projectFileName);
+                    projectCollection.LoadProject(projectFileName).Build();
                 }
                 finally
                 {
-                    engine.UnregisterAllLoggers();
+                    projectCollection.UnregisterAllLoggers();
                 }
             }
             finally
@@ -236,153 +251,5 @@ namespace Perspective.PixelShader.Build
                 Directory.SetCurrentDirectory(oldDir);
             }
         }
-
-        //private static void Compile(
-        //    EffectBuilderCollection builders,
-        //    TargetFramework target,
-        //    bool debug)
-        //{
-        //    string assemblyName = builders.EffectNamespace;
-        //    string oldDir = Directory.GetCurrentDirectory();
-        //    try
-        //    {
-        //        // change of current directory
-        //        // for getting an exact match betwwen source path and .ps resource path
-        //        Directory.SetCurrentDirectory(builders.EffectDirectory);
-
-        //        Engine engine = new Engine();
-        //        engine.DefaultToolsVersion = "4.0";
-
-        //        Project project = engine.CreateNewProject();
-        //        project.DefaultTargets = "Build";
-        //        project.AddNewUsingTaskFromAssemblyName("ShaderBuildTask.PixelShaderCompile", "ShaderBuildTask, Version=1.0.3072.18169, Culture=neutral, PublicKeyToken=44e467d1687af125");
-
-        //        BuildPropertyGroup propertyGroup = project.AddNewPropertyGroup(false);
-        //        propertyGroup.AddNewProperty("ProductVersion", "9.0.30729");
-        //        propertyGroup.AddNewProperty("TargetFrameworkVersion", "v4.0");
-        //        propertyGroup.AddNewProperty("SchemaVersion", "2.0");
-        //        propertyGroup.AddNewProperty("ProjectGuid", Guid.NewGuid().ToString());
-        //        propertyGroup.AddNewProperty("OutputType", "Library");
-        //        propertyGroup.AddNewProperty("RootNamespace", assemblyName);
-        //        propertyGroup.AddNewProperty("AssemblyName", assemblyName);
-        //        propertyGroup.AddNewProperty("WarningLevel", "4");
-        //        propertyGroup.AddNewProperty("ErrorReport", "prompt");
-
-        //        string targetFolder = target == TargetFramework.Wpf ? @"\WPF" : @"\Silverlight";
-        //        string configFolder = debug ? @"\Debug" : @"\Release";
-        //        propertyGroup.AddNewProperty("OutputPath", String.Format("bin{0}{1}", targetFolder, configFolder));
-
-        //        BuildPropertyGroup configPropertyGroup = project.AddNewPropertyGroup(false);
-        //        if (debug)
-        //        {
-        //            configPropertyGroup.AddNewProperty("DebugSymbols", "true");
-        //            configPropertyGroup.AddNewProperty("DebugType", "full");
-        //            configPropertyGroup.AddNewProperty("Optimize", "false");
-        //            if (target == TargetFramework.Wpf)
-        //            {
-        //                configPropertyGroup.AddNewProperty("DefineConstants", "DEBUG;TRACE");
-        //            }
-        //            if (target == TargetFramework.Silverlight)
-        //            {
-        //                configPropertyGroup.AddNewProperty("DefineConstants", "DEBUG;TRACE;SILVERLIGHT");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            configPropertyGroup.AddNewProperty("DebugType", "pdbonly");
-        //            configPropertyGroup.AddNewProperty("Optimize", "true");
-        //            if (target == TargetFramework.Wpf)
-        //            {
-        //                configPropertyGroup.AddNewProperty("DefineConstants", "TRACE");
-        //            }
-        //            if (target == TargetFramework.Silverlight)
-        //            {
-        //                configPropertyGroup.AddNewProperty("DefineConstants", "TRACE;SILVERLIGHT");
-        //            }
-        //        }
-
-        //        if (target == TargetFramework.Silverlight)
-        //        {
-        //            BuildPropertyGroup slPropertyGroup = project.AddNewPropertyGroup(false);
-        //            slPropertyGroup.AddNewProperty("SilverlightApplication", "false");
-        //            slPropertyGroup.AddNewProperty("NoStdLib", "true");
-        //            slPropertyGroup.AddNewProperty("NoConfig", "true");
-
-        //            BuildItemGroup slItemGroup = project.AddNewItemGroup();
-        //            slItemGroup.AddNewItem("Reference", "mscorlib");
-        //            slItemGroup.AddNewItem("Reference", "System");
-        //            slItemGroup.AddNewItem("Reference", "System.Core");
-        //            slItemGroup.AddNewItem("Reference", "System.Windows");
-        //        }
-        //        if (target == TargetFramework.Wpf)
-        //        {
-        //            BuildItemGroup itemGroup = project.AddNewItemGroup();
-        //            itemGroup.AddNewItem("Reference", "System");
-        //            BuildItem item = itemGroup.AddNewItem("Reference", "System.Core");
-        //            item.SetMetadata("RequiredTargetFramework", "4.0");
-        //            BuildItem item2 = itemGroup.AddNewItem("Reference", "WindowsBase");
-        //            item2.SetMetadata("RequiredTargetFramework", "4.0");
-        //            BuildItem item3 = itemGroup.AddNewItem("Reference", "PresentationCore");
-        //            item3.SetMetadata("RequiredTargetFramework", "4.0");
-        //            BuildItem item4 = itemGroup.AddNewItem("Reference", "PresentationFramework");
-        //            item4.SetMetadata("RequiredTargetFramework", "4.0");
-        //        }
-
-        //        BuildItemGroup itemGroup2 = project.AddNewItemGroup();
-        //        BuildItemGroup itemGroup3 = project.AddNewItemGroup();
-        //        foreach (EffectBuilder builder in builders)
-        //        {
-        //            itemGroup2.AddNewItem("Compile", builder.EffectName + ".cs");
-        //            itemGroup3.AddNewItem("Effect", builder.EffectName + ".fx");
-        //        }
-
-        //        if (target == TargetFramework.Silverlight)
-        //        {
-        //            project.AddNewImport(@"$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v4.0\Microsoft.Silverlight.CSharp.targets", null);
-        //        }
-        //        if (target == TargetFramework.Wpf)
-        //        {
-        //            project.AddNewImport(@"$(MSBuildToolsPath)\Microsoft.CSharp.targets", null);
-        //        }
-
-        //        Target effectTarget = project.Targets.AddNewTarget("EffectCompile");
-        //        effectTarget.Condition = "'@(Effect)' != ''";
-
-        //        BuildTask task = effectTarget.AddNewTask("PixelShaderCompile");
-        //        task.SetParameterValue("Sources", "@(Effect)");
-        //        task.AddOutputItem("Outputs", "Resource");
-
-        //        BuildPropertyGroup propertyGroup2 = project.AddNewPropertyGroup(true);
-        //        propertyGroup2.AddNewProperty("PrepareResourcesDependsOn", "EffectCompile;$(PrepareResourcesDependsOn)");
-
-        //        // string s = project.Xml;
-
-        //        ConsoleLogger logger = new ConsoleLogger();
-        //        engine.RegisterLogger(logger);
-        //        try
-        //        {
-        //            if (target == TargetFramework.Silverlight)
-        //            {
-        //                // Silverlight 3.0 RTM requires a project file
-        //                // (else an MSB4044 error occurs)
-        //                string projectFileName = "FxGenSl.proj";
-        //                project.Save(projectFileName);
-        //                engine.BuildProjectFile(projectFileName);
-        //            }
-        //            if (target == TargetFramework.Wpf)
-        //            {
-        //                engine.BuildProject(project);
-        //            }
-        //        }
-        //        finally
-        //        {
-        //            engine.UnregisterAllLoggers();
-        //        }
-        //    }
-        //    finally
-        //    {
-        //        Directory.SetCurrentDirectory(oldDir);
-        //    }
-        //}
     }
 }

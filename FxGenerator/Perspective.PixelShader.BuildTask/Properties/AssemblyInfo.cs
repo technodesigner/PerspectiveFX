@@ -32,5 +32,40 @@ using System.Runtime.InteropServices;
 // Vous pouvez spécifier toutes les valeurs ou indiquer les numéros de build et de révision par défaut 
 // en utilisant '*', comme indiqué ci-dessous :
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.0.2")]
-[assembly: AssemblyFileVersion("2.0.0.2")]
+
+[assembly: AssemblyVersion(Perspective.PixelShader.BuildTask.LibraryInfo.GlobalVersion)]
+[assembly: AssemblyFileVersion(Perspective.PixelShader.BuildTask.LibraryInfo.GlobalVersion)]
+
+namespace Perspective.PixelShader.BuildTask
+{
+    /// <summary>
+    /// A class to handle the default assembly attribute values.
+    /// </summary>
+    public sealed class LibraryInfo
+    {
+        private LibraryInfo() { }
+
+        /// <summary>
+        /// The default XML namespace.
+        /// </summary>
+        public const string XmlNamespace = "http://www.codeplex.com/perspectivefx";
+
+        /// <summary>
+        /// Perspective global version number.
+        /// 2.0.0.1 : 2.0 alpha
+        /// 2.0.0.2 : 2.0 final
+        /// 2.1.0.0 : 2.1 final (32-64 bits)
+        /// </summary>
+        public const string GlobalVersion = "2.1.0.0";
+
+        /// <summary>
+        /// Global company name.
+        /// </summary>
+        public const string Company = "perspectivefx.codeplex.com";
+
+        /// <summary>
+        /// Global copyright information.
+        /// </summary>
+        public const string Copyright = "Copyright © http://perspectivefx.codeplex.com 2009-2011";
+    }
+}

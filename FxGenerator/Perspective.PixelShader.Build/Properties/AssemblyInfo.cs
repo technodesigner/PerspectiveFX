@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Perspective.PixelShader.Build")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany(Perspective.PixelShader.LibraryInfo.Company)]
 [assembly: AssemblyProduct("Perspective.PixelShader.Build")]
-[assembly: AssemblyCopyright("Copyright ©  2009")]
+[assembly: AssemblyCopyright(Perspective.PixelShader.LibraryInfo.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -54,5 +54,15 @@ namespace Perspective.PixelShader.Build
         /// Perspective global version number.
         /// </summary>
         public const string GlobalVersion = Perspective.PixelShader.LibraryInfo.GlobalVersion;
+
+        /// <summary>
+        /// Global company name.
+        /// </summary>
+        public const string Company = Perspective.PixelShader.LibraryInfo.Company;
+
+        /// <summary>
+        /// Global copyright information.
+        /// </summary>
+        public const string Copyright = Perspective.PixelShader.LibraryInfo.Copyright;
     }
 }

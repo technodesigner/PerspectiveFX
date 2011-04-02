@@ -6,25 +6,50 @@
     EffectNamespace="FxDemo.Effects"    
     >
     <pfx:EffectBuilder
-        EffectName="InvertEffect">
+        EffectName="DisplaySettingEffect">
+        <pfx:Contraster FilterName="Contrast"/>
+        <pfx:Brighter FilterName="Brightness"/>
+        <pfx:Saturator FilterName="Saturation"/>
+    </pfx:EffectBuilder>
+    <pfx:EffectBuilder
+        EffectName="GrayScalerEffect">
+        <pfx:GrayScaler FilterName="GrayScaler"/>
+    </pfx:EffectBuilder>
+    <pfx:EffectBuilder
+        EffectName="ClipperEffect">
+        <pfx:Clipper FilterName="Clipper"/>
+    </pfx:EffectBuilder>
+    <pfx:EffectBuilder
+        EffectName="ColorTonerEffect">
+        <pfx:ColorToner FilterName="ColorToner"/>
+    </pfx:EffectBuilder>
+    <pfx:EffectBuilder
+        EffectName="InverterEffect">
         <pfx:Inverter FilterName="Inverter"/>
+    </pfx:EffectBuilder>
+    <pfx:EffectBuilder
+        EffectName="MixerEffect">
+        <pfx:Mixer FilterName="Mixer"/>
+    </pfx:EffectBuilder>
+    <pfx:EffectBuilder
+        EffectName="SubtractorEffect">
+        <pfx:Subtractor FilterName="Subtractor"/>
+    </pfx:EffectBuilder>
+    <pfx:EffectBuilder
+        EffectName="SolarizerEffect">
+        <pfx:Solarizer FilterName="Solarizer"/>
+    </pfx:EffectBuilder>
+    <pfx:EffectBuilder
+        EffectName="LithEffect">
+        <pfx:ThresholdFilter />
     </pfx:EffectBuilder>
     <pfx:EffectBuilder
         EffectName="WaveEffect"
         DefaultSampling="False">
         <pfx:WaveWarper FilterName="WaveWarper"/>
-        <pfx:Saturator FilterName="Saturation"/>
-        <pfx:Contraster FilterName="Contrast"/>
-        <pfx:Brighter FilterName="Brightness"/>
     </pfx:EffectBuilder>
     <pfx:EffectBuilder
-        EffectName="LithEffect">
-        <pfx:ThresholdFilter />
-    </pfx:EffectBuilder>    
-    <pfx:EffectBuilder
-        EffectName="DisplaySettingEffect">
-        <pfx:Contraster FilterName="Contrast"/>
-        <pfx:Brighter FilterName="Brightness"/>
-        <pfx:Saturator FilterName="Saturation"/>
-    </pfx:EffectBuilder>    
+        EffectName="ConvolutionEffect">
+        <pfx:Convolution3X3Filter FilterName="Convolution"/>
+    </pfx:EffectBuilder>
 </pfx:EffectBuilderCollection>

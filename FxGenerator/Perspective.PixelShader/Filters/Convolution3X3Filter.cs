@@ -124,7 +124,11 @@ namespace Perspective.PixelShader.Filters
             output.WriteLine("if ({0} == 0.0)", _horizontalPixelCount.FullName);
             output.WriteLine("{");
             output.Indent++;
-            output.WriteLine("{0} = {1};", _horizontalPixelCount.FullName, _defaultHorizontalPixelCount);
+
+            // Generates error X3025: global variables are implicitly constant, enable compatibility mode to allow modification
+            // output.WriteLine("{0} = {1};", _horizontalPixelCount.FullName, _defaultHorizontalPixelCount);
+            output.WriteLine("return color;");
+
             output.Indent--;
             output.WriteLine("}");
             output.WriteLine("float hpx = 1.0 / {0};", _horizontalPixelCount.FullName);
@@ -132,7 +136,11 @@ namespace Perspective.PixelShader.Filters
             output.WriteLine("if ({0} == 0.0)", _verticalPixelCount.FullName);
             output.WriteLine("{");
             output.Indent++;
-            output.WriteLine("{0} = {1};", _verticalPixelCount.FullName, _defaultVerticalPixelCount);
+            
+            // Generates error X3025: global variables are implicitly constant, enable compatibility mode to allow modification
+            // output.WriteLine("{0} = {1};", _verticalPixelCount.FullName, _defaultVerticalPixelCount);
+            output.WriteLine("return color;");
+
             output.Indent--;
             output.WriteLine("}");
             output.WriteLine("float vpx = 1.0 / {0};", _verticalPixelCount.FullName);
@@ -149,7 +157,11 @@ namespace Perspective.PixelShader.Filters
             output.WriteLine("if ({0} == 0.0)", _divisor.FullName);
             output.WriteLine("{");
             output.Indent++;
-            output.WriteLine("{0} = 1.0;", _divisor.FullName);
+            
+            // Generates error X3025: global variables are implicitly constant, enable compatibility mode to allow modification
+            // output.WriteLine("{0} = 1.0;", _divisor.FullName);
+            output.WriteLine("return color;");
+
             output.Indent--;
             output.WriteLine("}");
 

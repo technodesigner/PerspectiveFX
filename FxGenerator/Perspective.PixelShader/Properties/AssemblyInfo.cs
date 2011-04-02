@@ -22,9 +22,9 @@ using System.Windows.Markup;
 [assembly: AssemblyTitle("Perspective.PixelShader")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany(Perspective.PixelShader.LibraryInfo.Company)]
 [assembly: AssemblyProduct("Perspective.PixelShader")]
-[assembly: AssemblyCopyright("Copyright ©  2010")]
+[assembly: AssemblyCopyright(Perspective.PixelShader.LibraryInfo.Copyright)]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -73,7 +73,18 @@ namespace Perspective.PixelShader
         /// Perspective global version number.
         /// 2.0.0.1 : 2.0 alpha
         /// 2.0.0.2 : 2.0 final
+        /// 2.1.0.0 : 2.1 final (32-64 bits)
         /// </summary>
-        public const string GlobalVersion = "2.0.0.2";
+        public const string GlobalVersion = "2.1.0.0";
+
+        /// <summary>
+        /// Global company name.
+        /// </summary>
+        public const string Company = "perspectivefx.codeplex.com";
+
+        /// <summary>
+        /// Global copyright information.
+        /// </summary>
+        public const string Copyright = "Copyright © http://perspectivefx.codeplex.com 2009-2011";
     }
 }

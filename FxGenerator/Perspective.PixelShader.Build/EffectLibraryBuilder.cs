@@ -16,8 +16,9 @@ using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Execution;
 using System.Reflection;
-using Microsoft.Build.Logging;
 using Microsoft.Win32;
+using Microsoft.Build.Framework;
+using System.Collections.Generic;
 
 namespace Perspective.PixelShader.Build
 {
@@ -33,13 +34,14 @@ namespace Perspective.PixelShader.Build
         /// <param name="wpf">Indicates if a WPF assembly shall be built.</param>
         /// <param name="sl">Indicates if a Silverlight assembly shall be built.</param>
         /// <param name="debug">Indicates if the compilation shall be in debug mode.</param>
-        public static void BuildFromXaml(string filename, bool wpf, bool sl, bool debug)
+        /// <param name="loggers">Collection of loggers used for build.</param>
+        public static void BuildFromXaml(string filename, bool wpf, bool sl, bool debug, IEnumerable<ILogger> loggers)
         {
             StreamReader sr = new StreamReader(filename);
             try
             {
                 EffectBuilderCollection builders = (EffectBuilderCollection)XamlReader.Load(sr.BaseStream);
-                BuildFromBuilders(builders, wpf, sl, debug);
+                BuildFromBuilders(builders, wpf, sl, debug, loggers);
             }
             finally
             {
@@ -54,7 +56,7 @@ namespace Perspective.PixelShader.Build
         /// <param name="wpf">Indicates if a WPF assembly shall be built.</param>
         /// <param name="sl">Indicates if a Silverlight assembly shall be built.</param>
         /// <param name="debug">Indicates if the compilation shall be in debug mode.</param>
-        public static void BuildFromBuilders(EffectBuilderCollection builders, bool wpf, bool sl, bool debug)
+        public static void BuildFromBuilders(EffectBuilderCollection builders, bool wpf, bool sl, bool debug, IEnumerable<ILogger> loggers)
         {
             foreach (EffectBuilder builder in builders)
             {
@@ -62,11 +64,11 @@ namespace Perspective.PixelShader.Build
             }
             if (wpf)
             {
-                Compile(builders, TargetFramework.Wpf, debug);
+                Compile(builders, TargetFramework.Wpf, debug, loggers);
             }
             if (sl)
             {
-                Compile(builders, TargetFramework.Silverlight, debug);
+                Compile(builders, TargetFramework.Silverlight, debug, loggers);
             }
         }
 
@@ -78,7 +80,8 @@ namespace Perspective.PixelShader.Build
         private static void Compile(
             EffectBuilderCollection builders,
             TargetFramework target,
-            bool debug)
+            bool debug,
+            IEnumerable<ILogger> loggers)
         {
             string assemblyName = builders.EffectNamespace;
             string oldDir = Directory.GetCurrentDirectory();
@@ -88,7 +91,10 @@ namespace Perspective.PixelShader.Build
                 // for getting an exact match betwwen source path and .ps resource path
                 Directory.SetCurrentDirectory(builders.EffectDirectory);
 
-                Project project = new Project();
+                var projectCollection = new ProjectCollection();
+                projectCollection.DefaultToolsVersion = "4.0";
+
+                Project project = new Project(projectCollection);
 
                 if (RunAs64BitsProcess() && (target == TargetFramework.Silverlight))
                 {
@@ -111,15 +117,12 @@ namespace Perspective.PixelShader.Build
                 }
 
                 project.SetProperty("DefaultTargets", "Build");
-                var usingTaskElement1 = project.Xml.CreateUsingTaskElement("ShaderBuildTask.PixelShaderCompile", null, "ShaderBuildTask, Version=1.0.3072.18169, Culture=neutral, PublicKeyToken=44e467d1687af125");
-                project.Xml.InsertAfterChild(usingTaskElement1, project.Xml.LastChild);
-                var usingTaskElement2 = project.Xml.CreateUsingTaskElement("Perspective.PixelShader.BuildTask.PixelShaderBuildTask", null, "Perspective.PixelShader.BuildTask");
-                project.Xml.InsertAfterChild(usingTaskElement2, project.Xml.LastChild);
+                var usingTaskElement = project.Xml.CreateUsingTaskElement("Perspective.PixelShader.BuildTask.PixelShaderBuildTask", null, "Perspective.PixelShader.BuildTask");
+                project.Xml.InsertAfterChild(usingTaskElement, project.Xml.LastChild);
 
                 var propertyGroup = project.Xml.CreatePropertyGroupElement();
                 project.Xml.InsertAfterChild(propertyGroup, project.Xml.LastChild);
 
-                // propertyGroup.AddProperty("ProductVersion", "9.0.30729");
                 propertyGroup.AddProperty("TargetFrameworkVersion", "v4.0");
                 propertyGroup.AddProperty("SchemaVersion", "2.0");
                 propertyGroup.AddProperty("ProjectGuid", Guid.NewGuid().ToString());
@@ -231,15 +234,13 @@ namespace Perspective.PixelShader.Build
                 project.Xml.InsertAfterChild(propertyGroup2, project.Xml.LastChild);
                 propertyGroup2.AddProperty("PrepareResourcesDependsOn", buildTargetName + ";$(PrepareResourcesDependsOn)");
 
-                var projectCollection = new ProjectCollection();
-                projectCollection.DefaultToolsVersion = "4.0";
-                ConsoleLogger logger = new ConsoleLogger();
-                projectCollection.RegisterLogger(logger);
+                string projectFileName = (target == TargetFramework.Silverlight) ? "FxGenSl.proj" : "FxGenWpf.proj";
+                project.Save(projectFileName);
+                
+                projectCollection.RegisterLoggers(loggers);
                 try
                 {
-                    string projectFileName = (target == TargetFramework.Silverlight) ? "FxGenSl.proj" : "FxGenWpf.proj";
-                    project.Save(projectFileName);
-                    projectCollection.LoadProject(projectFileName).Build();
+                    project.Build();
                 }
                 finally
                 {

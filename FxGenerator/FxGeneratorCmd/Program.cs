@@ -11,6 +11,9 @@
 //------------------------------------------------------------------
 using System;
 using System.Threading;
+using Microsoft.Build.Logging;
+using System.Collections.Generic;
+using Microsoft.Build.Framework;
 
 namespace FxGeneratorCmd
 {
@@ -74,7 +77,11 @@ namespace FxGeneratorCmd
                     wpf = false;
                 }
             }
-            Perspective.PixelShader.Build.EffectLibraryBuilder.BuildFromXaml(filename, wpf, sl, debug);
+
+            ConsoleLogger logger = new ConsoleLogger();
+            List<ILogger> loggers = new List<ILogger>();
+            loggers.Add(logger);
+            Perspective.PixelShader.Build.EffectLibraryBuilder.BuildFromXaml(filename, wpf, sl, debug, loggers);
             // Console.ReadLine();
         }
     }

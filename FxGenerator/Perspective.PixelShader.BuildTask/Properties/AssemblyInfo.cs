@@ -55,8 +55,9 @@ namespace Perspective.PixelShader.BuildTask
         /// 2.0.0.1 : 2.0 alpha
         /// 2.0.0.2 : 2.0 final
         /// 2.1.0.0 : 2.1 final (32-64 bits)
+        /// 2.2.0.0 : WPF 4.0 - Silverlight 5/5.1 (32-64 bits)
         /// </summary>
-        public const string GlobalVersion = "2.1.0.0";
+        public const string GlobalVersion = "2.2.0.0";
 
         /// <summary>
         /// Global company name.

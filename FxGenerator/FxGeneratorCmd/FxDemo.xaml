@@ -46,10 +46,15 @@
     <pfx:EffectBuilder
         EffectName="WaveEffect"
         DefaultSampling="False">
-        <pfx:WaveWarper FilterName="WaveWarper"/>
+        <pfx:WaveWarper FilterName="WaveWarper"/><!--Must be in first position-->
     </pfx:EffectBuilder>
     <pfx:EffectBuilder
         EffectName="ConvolutionEffect">
-        <pfx:Convolution3X3Filter FilterName="Convolution"/>
+        <pfx:Convolution3X3Filter FilterName="Convolution"/><!--Must be in first position-->
+    </pfx:EffectBuilder>
+    <pfx:EffectBuilder
+        EffectName="CompositeConvolutionEffect">
+        <pfx:Convolution3X3Filter FilterName="Convolution"/><!--Must be in first position-->
+        <pfx:Inverter FilterName="Inverter"/>
     </pfx:EffectBuilder>
 </pfx:EffectBuilderCollection>

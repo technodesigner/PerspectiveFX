@@ -101,7 +101,8 @@ namespace Perspective.PixelShader.Build
                     // On a 64 bits machine, the 64 version of MsBuild does not find the Silverlight 4 SDK...
                     // Thanks to Gary Hall, http://stackoverflow.com/questions/3001083/msbuild-command-line-error-silverlight-4-sdk-is-not-installed
                     // Here the SDK path is read from the registry
-                    RegistryKey registryKey1 = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Silverlight\v4.0\ReferenceAssemblies");
+                    // 2012/06/14 : Silverlight 5.0 adaptation
+                    RegistryKey registryKey1 = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Silverlight\v5.0\ReferenceAssemblies");
                     try
                     {
                         string slRuntimePath = registryKey1.GetValue("SLRuntimeInstallPath").ToString();
@@ -210,7 +211,8 @@ namespace Perspective.PixelShader.Build
 
                 if (target == TargetFramework.Silverlight)
                 {
-                    var projectImportElement1 = project.Xml.CreateImportElement(@"$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v4.0\Microsoft.Silverlight.CSharp.targets");
+                    // 2012/06/14 : Silverlight 5.0 adaptation
+                    var projectImportElement1 = project.Xml.CreateImportElement(@"$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v5.0\Microsoft.Silverlight.CSharp.targets");
                     project.Xml.InsertAfterChild(projectImportElement1, project.Xml.LastChild);
                 }
                 if (target == TargetFramework.Wpf)
